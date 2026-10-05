@@ -1,3 +1,4 @@
+import { environment } from '../environments/environment';
 import { Injectable } from '@angular/core';
 export class ApiFailure extends Error {
   constructor(readonly code: string, readonly fields: Record<string,string> = {}, readonly status = 0) { super(code); }
@@ -11,7 +12,7 @@ export class Api {
     const headers: Record<string,string> = {'Content-Type':'application/json',...extraHeaders};
     if (method !== 'GET' && this.token) headers[this.token.headerName] = this.token.token;
     let response: Response;
-    try { response = await fetch('/api/v1' + path,{method,headers,credentials:'same-origin',body:body === undefined ? undefined : JSON.stringify(body)}); }
+    try { response = await fetch(environment.apiBaseUrl + path,{method,headers,credentials:'include',body:body === undefined ? undefined : JSON.stringify(body)}); }
     catch { throw new ApiFailure('NETWORK_ERROR'); }
     let data: unknown;
     try { data = await response.json(); } catch { throw new ApiFailure('NETWORK_ERROR'); }
