@@ -1,5 +1,8 @@
-export const translations: Record<string,Record<string,string>> = {
+export const translations: Record<string, Record<string, string>> = {
   "es": {
+    "parkLocation": "Cómo llegar",
+    "parkMapTitle": "Mapa de ubicación de ejemplo en San José, Costa Rica",
+    "parkOpenMap": "Abrir en Google Maps",
     "brand": "Gestión turística",
     "language": "Idioma",
     "staffAccess": "Acceso del personal",
@@ -134,6 +137,9 @@ export const translations: Record<string,Record<string,string>> = {
     "retryAfter": "Segundos para reintentar"
   },
   "en": {
+    "parkLocation": "Getting here",
+    "parkMapTitle": "Example location map in San José, Costa Rica",
+    "parkOpenMap": "Open in Google Maps",
     "brand": "Tourism management",
     "language": "Language",
     "staffAccess": "Staff access",
@@ -268,6 +274,9 @@ export const translations: Record<string,Record<string,string>> = {
     "retryAfter": "Seconds before retry"
   },
   "pt": {
+    "parkLocation": "Como chegar",
+    "parkMapTitle": "Mapa de localização de exemplo em San José, Costa Rica",
+    "parkOpenMap": "Abrir no Google Maps",
     "brand": "Gestão turística",
     "language": "Idioma",
     "staffAccess": "Acesso da equipe",

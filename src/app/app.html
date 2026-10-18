@@ -1,3 +1,275 @@
-<header><a class="brand" href="/">{{content()?.displayName||t('publicTitle')}}</a><div class="controls"><label for="locale">{{t('language')}}<select id="locale" [value]="locale()" (change)="setLocale($any($event.target).value)"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option></select></label><label for="currency">{{t('currency')}}<select id="currency" [value]="currency()" (change)="setCurrency($any($event.target).value)"><option value="CRC">CRC</option><option value="USD" [disabled]="!canConvert('USD')">USD</option><option value="BRL" [disabled]="!canConvert('BRL')">BRL</option></select></label></div></header><main>
-@if(loading()){<p role="status">{{t('loading')}}</p>}@else if(error()){<section class="card error" role="alert"><h1><span aria-hidden="true">!</span> {{t('error')}}</h1><p>{{t(error())}}</p><button (click)="load()">{{t('reload')}}</button></section>}@else{<p class="eyebrow">Costa Rica</p><h1>{{content()?.displayName||t('publicTitle')}}</h1><p class="lead">{{content()?.description||t('preparing')}}</p>@if(data()?.reservationsEnabled){<app-reservation [business]="data()!" [locale]="locale()" [currency]="currency()"/>}@else{<section class="notice"><strong>{{t('unavailable')}}</strong><p>{{t('preparing')}}</p></section>}<div class="layout"><div><section class="card"><h2>{{t('services')}}</h2><p class="multiline">{{content()?.services||t('noInfo')}}</p></section><section class="card"><h2>{{t('hours')}}</h2>@for(hour of data()?.hours||[];track $index){<p>{{dayName(hour.weekday)}} · {{hour.opensAt}}–{{hour.closesAt}}</p>}@empty{<p>{{t('noInfo')}}</p>}</section><section class="card"><h2>{{t('contact')}}</h2><p>{{data()?.phone}}</p><p>{{data()?.email}}</p><p>{{data()?.address}}</p></section></div><section class="card prices"><h2>{{t('entryPrices')}}</h2>@if(data()?.ratePlan){@for(field of priceFields;track field;let i=$index){<div class="price"><span>{{t(priceLabels[i])}}</span><strong>{{amount(field)}}</strong></div>}@if(currency()!=='CRC'){<p>{{t('estimate')}}</p><small>{{t('rateDate')}}: {{rate()?.updatedOn}}</small>}@else{<p>{{t('crcOnly')}}</p>}}@else{<p>{{t('noInfo')}}</p>}</section></div>}
-</main><footer>Costa Rica · America/Costa_Rica</footer>
+<header>
+  <a class="brand" href="/">{{ content()?.displayName || t('publicTitle') }}</a>
+  <div class="controls">
+    <label for="locale"
+      >{{ t('language')
+      }}<select id="locale" [value]="locale()" (change)="setLocale($any($event.target).value)">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="pt">Português</option>
+      </select></label
+    ><label for="currency"
+      >{{ t('currency')
+      }}<select
+        id="currency"
+        [value]="currency()"
+        (change)="setCurrency($any($event.target).value)"
+      >
+        <option value="CRC">CRC</option>
+        <option value="USD" [disabled]="!canConvert('USD')">USD</option>
+        <option value="BRL" [disabled]="!canConvert('BRL')">BRL</option>
+      </select></label
+    >
+  </div>
+</header>
+<!-- Imagen -->
+@if (!loading() && !error()) {
+  <section class="hero" aria-labelledby="hero-title">
+    <img
+      class="hero-image"
+      src="https://plus.unsplash.com/premium_photo-1728262247661-f2f767933e29?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+      alt=""
+      fetchpriority="high"
+    />
+
+    <div class="hero-content">
+      <p class="eyebrow">Costa Rica</p>
+
+      <h1 id="hero-title">
+        {{ content()?.displayName || t('publicTitle') }}
+      </h1>
+
+      <p class="lead">
+        {{ content()?.description || t('preparing') }}
+      </p>
+    </div>
+  </section>
+}
+<main class="tour-main">
+  @if (loading()) {
+    <div class="section-inner status-section">
+      <p role="status">{{ t('loading') }}</p>
+    </div>
+  } @else if (error()) {
+    <section class="section-inner status-section error" role="alert">
+      <h1>{{ t('error') }}</h1>
+      <p>{{ t(error()) }}</p>
+      <button (click)="load()">{{ t('reload') }}</button>
+    </section>
+  } @else {
+    <!-- Reservaciones -->
+    <section class="booking-section">
+      <div class="section-inner">
+        @if (data()?.reservationsEnabled) {
+          <div class="booking-surface">
+            <div class="section-heading">
+              <p class="eyebrow">
+                {{ content()?.displayName || t('publicTitle') }}
+              </p>
+              <h2>{{ t('book') }}</h2>
+            </div>
+
+            <app-reservation
+              [business]="data()!"
+              [locale]="locale()"
+              [currency]="currency()"
+            />
+          </div>
+        } @else {
+          <div class="notice">
+            <strong>{{ t('unavailable') }}</strong>
+            <p>{{ t('preparing') }}</p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Servicios -->
+    <section class="tour-section services-section">
+      <div class="section-inner">
+        <div class="section-heading centered">
+          <h2>{{ t('services') }}</h2>
+        </div>
+
+        @if (services().length) {
+          <div class="services-carousel" [class.single-service]="services().length === 1">
+            @for (service of services(); track service.id) {
+              <article class="service-item">
+                <div class="service-photo">
+                  @if (service.imageUrl; as imageUrl) {
+                    <img
+                      [src]="imageUrl"
+                      [alt]="service.imageAlt"
+                      width="1200"
+                      height="800"
+                      loading="lazy"
+                      decoding="async"
+                      (error)="serviceMediaFailed(imageUrl)"
+                    />
+                  }
+                  <svg
+                    class="photo-wave"
+                    viewBox="0 0 600 60"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M0 42 C110 65 210 16 300 10 C390 16 490 65 600 42 V60 H0 Z" />
+                  </svg>
+                </div>
+                <div class="service-body">
+                  <div class="service-heading">
+                    @if (service.iconUrl; as iconUrl) {
+                      <span class="service-icon" aria-hidden="true">
+                        <img [src]="iconUrl" alt="" width="44" height="44"
+                          loading="lazy" decoding="async" (error)="serviceMediaFailed(iconUrl)" />
+                      </span>
+                    }
+                    <h3>{{ service.name }}</h3>
+                  </div>
+                  <p class="multiline">{{ service.description }}</p>
+                </div>
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="section-description centered multiline">{{ content()?.services || t('noInfo') }}</p>
+        }
+      </div>
+    </section>
+
+    <!-- Horarios -->
+    <section class="tour-section hours-section">
+      <div class="section-inner hours-layout">
+        <div class="section-heading">
+          <h2>{{ t('hours') }}</h2>
+        </div>
+
+        <div class="hours-list">
+          @for (hour of data()?.hours || []; track $index) {
+            <div class="hours-row">
+              <span>{{ dayName(hour.weekday) }}</span>
+              <strong>{{ hour.opensAt }}–{{ hour.closesAt }}</strong>
+            </div>
+          } @empty {
+            <p>{{ t('noInfo') }}</p>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- Precios -->
+    <section class="tour-section prices-section">
+      <div class="section-inner">
+        <div class="section-heading centered">
+          <h2>{{ t('entryPrices') }}</h2>
+        </div>
+
+        @if (data()?.ratePlan) {
+          <div class="rates-grid">
+            @for (field of priceFields; track field; let i = $index) {
+              <div class="rate-item">
+                <h3>{{ t(priceLabels[i]) }}</h3>
+                <strong>{{ amount(field) }}</strong>
+              </div>
+            }
+          </div>
+
+          <div class="rates-note">
+            @if (currency() !== 'CRC') {
+              <p>{{ t('estimate') }}</p>
+              <small>{{ t('rateDate') }}: {{ rate()?.updatedOn }}</small>
+            } @else {
+              <p>{{ t('crcOnly') }}</p>
+            }
+          </div>
+        } @else {
+          <p class="centered">{{ t('noInfo') }}</p>
+        }
+      </div>
+    </section>
+
+    <!-- Contacto y ubicación -->
+    <section class="tour-section contact-section">
+      <div class="section-inner contact-layout">
+        <div class="contact-column">
+          <div class="section-heading">
+            <h2>{{ t('contact') }}</h2>
+          </div>
+
+          <div class="contact-list">
+            <div class="contact-row">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="m6 3 3 5-2 2c2 4 3 5 7 7l2-2 5 3c-1 3-3 4-6 3C8 19 5 16 3 9 2 6 3 4 6 3Z"
+                  />
+                </svg>
+              </span>
+
+              <div>
+                <span class="contact-label">{{ t('phone') }}</span>
+                <p>{{ data()?.phone }}</p>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 6 9 7 9-7" />
+                </svg>
+              </span>
+
+              <div>
+                <span class="contact-label">{{ t('email') }}</span>
+                <p>{{ data()?.email }}</p>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
+                  <circle cx="12" cy="10" r="2" />
+                </svg>
+              </span>
+
+              <div>
+                <span class="contact-label">{{ t('address') }}</span>
+                <p>{{ data()?.address }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="location-column">
+          <div class="section-heading">
+            <h2>{{ t('parkLocation') }}</h2>
+          </div>
+
+          <iframe
+            class="park-map"
+            [title]="t('parkMapTitle')"
+            src="https://www.google.com/maps?q=San%20Jos%C3%A9%2C%20Costa%20Rica&output=embed"
+            width="600"
+            height="350"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+
+          <a
+            class="map-button"
+            href="https://www.google.com/maps/search/?api=1&query=San%20Jos%C3%A9%2C%20Costa%20Rica"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {{ t('parkOpenMap') }}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  }
+</main>
+<footer>Costa Rica · America/Costa_Rica</footer>
