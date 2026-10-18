@@ -1,0 +1,133 @@
+.tour-main .services-section {
+  --section-background: #fff;
+  background: var(--section-background);
+}
+
+.tour-main .services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.tour-main .service-item {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-width: 0;
+}
+
+.tour-main .services-grid.single-service {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 536px;
+  margin-inline: auto;
+}
+
+.tour-main .service-photo {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background: var(--sage);
+}
+
+.tour-main .service-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms ease;
+}
+
+.tour-main .photo-wave {
+  position: absolute;
+  inset: auto 0 -1px;
+  display: block;
+  width: 100%;
+  height: 44px;
+  fill: var(--section-background);
+  pointer-events: none;
+}
+
+.tour-main .service-body {
+  padding: 1rem 0.5rem 0;
+}
+
+.tour-main .service-heading {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  min-height: 80px;
+}
+
+.tour-main .service-icon {
+  display: grid;
+  flex: 0 0 80px;
+  place-items: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--sage);
+  color: #fff;
+}
+
+.tour-main .service-item:nth-child(even) .service-icon {
+  background: #e9dfbd;
+  color: var(--forest);
+}
+
+.tour-main .service-icon img {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.tour-main .service-heading h3 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+.tour-main .service-body > p {
+  margin: 1.25rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.tour-main .hours-section {
+  background: var(--cream);
+}
+
+.tour-main .hours-layout {
+  display: block;
+}
+.tour-main .hours-layout > .section-heading {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+.tour-main .hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.tour-main .hours-row:first-child {
+  padding-top: 0;
+}
+
+.tour-main .hours-row > span {
+  text-transform: capitalize;
+}
+
+.tour-main .hours-row strong {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}

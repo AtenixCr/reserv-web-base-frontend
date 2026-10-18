@@ -4,7 +4,7 @@ import { Api, ApiFailure } from './api';
 import { Locale, PublicBusiness, Rate } from './models';
 import { translations } from './translations';
 import { displayMoney } from './money';
-@Component({selector:'app-root',imports:[Reservation],templateUrl:'./app.html',styleUrl:'./app.css'})
+@Component({selector:'app-root',imports:[Reservation],templateUrl:'./app.html',styleUrls:['./app.css','./app-services.css','./app-details.css']})
 export class App implements OnInit {
   private readonly api=inject(Api);
   readonly locale=signal<Locale>(this.readLocale());

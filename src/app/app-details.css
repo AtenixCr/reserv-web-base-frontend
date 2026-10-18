@@ -1,0 +1,244 @@
+/* Precios */
+.tour-main .prices-section {
+  background: #fff;
+}
+
+.tour-main .rates-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tour-main .rate-item {
+  min-width: 0;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+.tour-main .rate-item + .rate-item {
+  border-left: 1px solid var(--line);
+}
+
+.tour-main .rate-item h3 {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.tour-main .rate-item strong {
+  display: block;
+  font-size: clamp(1.4rem, 2.5vw, 2.15rem);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.tour-main .rates-note {
+  margin-top: 2rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.tour-main .rates-note p {
+  margin-bottom: 0.4rem;
+}
+
+/* Contacto y ubicación */
+.tour-main .contact-section {
+  background: var(--sage);
+}
+
+.tour-main .contact-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.tour-main .contact-list {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.tour-main .contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tour-main .contact-row > div {
+  min-width: 0;
+}
+
+.tour-main .contact-icon {
+  display: grid;
+  flex: 0 0 48px;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 70%);
+}
+
+.tour-main .contact-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tour-main .contact-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.tour-main .contact-row p {
+  margin: 0;
+}
+
+.tour-main .park-map {
+  display: block;
+  width: 100%;
+  height: 350px;
+  border: 0;
+  border-radius: 1.25rem;
+  background: #d7dfd5;
+}
+
+.tour-main .map-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 48px;
+  margin-top: 1.25rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 999px;
+  background: var(--forest);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+@media (hover: hover) {
+  .tour-main .service-item:hover .service-photo img {
+    transform: scale(1.04);
+  }
+
+  .tour-main .map-button:hover {
+    background: #285744;
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 768px) {
+  .tour-main .section-inner {
+    width: calc(100% - 32px);
+  }
+
+  .tour-main .services-grid,
+  .tour-main .hours-layout,
+  .tour-main .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .tour-main .services-grid {
+    grid-auto-rows: 1fr;
+  }
+
+  .tour-main .section-heading {
+    margin-bottom: 1.75rem;
+  }
+
+  .tour-main .hours-layout > .section-heading {
+    margin-bottom: 0;
+  }
+
+  .tour-main .rates-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tour-main .rate-item:nth-child(3) {
+    border-left: 0;
+  }
+
+  .tour-main .rate-item:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+
+  .tour-main .service-icon {
+    flex-basis: 68px;
+    width: 68px;
+    height: 68px;
+  }
+
+  .tour-main .park-map {
+    height: 300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-main .service-photo img,
+  .tour-main .map-button {
+    transition: none;
+    transform: none;
+  }
+}
+.services-carousel {
+  display: flex;
+  gap: 28px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  padding: 15px 8px 30px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.services-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.services-carousel .service-item {
+  flex: 0 0 300px;
+  min-width: 0;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+
+.services-carousel.single-service {
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .services-carousel {
+    gap: 20px;
+  }
+
+  .services-carousel .service-item {
+    flex-basis: 280px;
+  }
+}
+
+@media (max-width: 600px) {
+  .services-carousel {
+    gap: 16px;
+    padding: 10px 5px 25px;
+  }
+
+  .services-carousel .service-item {
+    flex: 0 0 85%;
+  }
+}
